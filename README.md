@@ -1,2 +1,2 @@
 # lineapi-firebase
-LINE API + Firebase Hosting
+LINE API + Firestore
