@@ -1,0 +1,25 @@
+{
+  "name": "line-firebase",
+  "version": "1.0.0",
+  "description": "LINE API + Firebase Hosting",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsrw-surasak/lineapi-firebase.git"
+  },
+  "keywords": [
+    "lineapi-firebase"
+  ],
+  "author": "nsrw.surasak",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nsrw-surasak/lineapi-firebase/issues"
+  },
+  "homepage": "https://github.com/nsrw-surasak/lineapi-firebase#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
