@@ -21,6 +21,7 @@ module.exports ={
   getUserById: async (userId)=> {
     const snapshot = await userProfile
       .where('userId', '==', userId)
+      .limit(1)
       .get();
     return snapshot;
   },
@@ -56,5 +57,21 @@ module.exports ={
       .where('userId', '==', userId)
       .get();
     return snapshot;
+  },
+  updateUserStatus : async ( userId, status, cause)  => {
+    const snapshot = await userCheckList
+      .where('userId', '==', userId)
+      .orderBy("timestamp", "desc")
+      .limit(1)
+      .get();
+
+    snapshot.forEach(async element => {
+      let update_data = { status: status};
+      if (cause){
+        update_data.cause = cause;
+      }
+      const data = await userCheckList.doc(element.id).update(update_data)
+      return data;
+    })
   }
 };
