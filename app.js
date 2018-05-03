@@ -3,6 +3,7 @@ const line = require('node-line-bot-api')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const eventHandler = require('./EventHandler.js');
 
 // need raw buffer for signature validation
 app.use(bodyParser.json({
@@ -19,23 +20,17 @@ line.init({
 });
 
 app.post('/webhook/', line.validator.validateSignature(), (req, res, next) => {
-  // get content from request body
-  const promises = req.body.events.map(event => {
+  await req.body.events.map(async (event) => {
+    let replyMsg = await eventHandler.main(event.source.userId,event.message.text);
     // reply message
-    return line.client
+    await line.client
       .replyMessage({
         replyToken: event.replyToken,
-        messages: [
-          {
-            type: 'text',
-            text: event.message.text
-          }
-        ]
-      })
-  })
-  Promise
-    .all(promises)
-    .then(() => res.json({success: true}))
+        messages: replyMsg
+      });
+  });
+    
+  res.json({success: true});
 })
 
 app.listen(process.env.PORT || 80, () => {
