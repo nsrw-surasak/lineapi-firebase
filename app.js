@@ -20,7 +20,8 @@ line.init({
 });
 
 app.post('/webhook/', line.validator.validateSignature(), async (req, res, next) => {
-  await req.body.events.map(async (event) => {
+	await req.body.events.map(async (event) => {
+	console.log(event.message.text)  
     let replyMsg = await eventHandler.main(event.source.userId,event.message.text);
     // reply message
     await line.client
