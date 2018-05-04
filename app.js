@@ -19,7 +19,7 @@ line.init({
   channelSecret: process.env.LINE_BOT_CHANNEL_SECRET
 });
 
-app.post('/webhook/', line.validator.validateSignature(), (req, res, next) => {
+app.post('/webhook/', line.validator.validateSignature(), async (req, res, next) => {
   await req.body.events.map(async (event) => {
     let replyMsg = await eventHandler.main(event.source.userId,event.message.text);
     // reply message
