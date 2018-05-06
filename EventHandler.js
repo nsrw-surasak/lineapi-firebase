@@ -35,8 +35,7 @@ module.exports ={
         return_msg[0].text = 'Enjoy!';
       break; 
       case (NG_CMD):
-        return_msg[0].text = 'Please select guilty';
-        return_msg.push(getCarousel());
+        return_msg[0] = getCarousel();
       break;
       default:
         let userData = await fbAPI.getUserById(userId);
