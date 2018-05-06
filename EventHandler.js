@@ -9,11 +9,11 @@ const NG_CMD = 'NG';
 
 // Status
 const OK = 'OK';
-const NG = 'NG';
+const NG = 'Incomplete';
 const CONFIRM = 'CONFIRM'
 const LEAVE = 'LEAVE';
-const NG_GUILTY = 'NG_GUITY';
-const NG_GUILTY_CAUSE = 'NG_GUILTY_CAUSE';
+const NG_GUILTY = NG + '_GUITY';
+const NG_GUILTY_CAUSE = NG + '_GUILTY_CAUSE';
 
 module.exports ={
   main : async (userId, message) => {
