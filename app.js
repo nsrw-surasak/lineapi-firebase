@@ -21,14 +21,24 @@ line.init({
 
 app.post('/webhook/', line.validator.validateSignature(), async (req, res, next) => {
 	await req.body.events.map(async (event) => {
-	console.log(event.message.text)  
-    let replyMsg = await eventHandler.main(event.source.userId,event.message.text);
-    // reply message
-    await line.client
+    if (event.message.text){
+      let replyMsg = await eventHandler.main(event.source.userId,event.message.text);
+      // reply message
+      await line.client
       .replyMessage({
         replyToken: event.replyToken,
         messages: replyMsg
       });
+    }else if (event.postback){
+      let replyMsg = await eventHandler.postback(event.source.userId,event.postback.data);
+      // reply message
+      await line.client
+      .replyMessage({
+        replyToken: event.replyToken,
+        messages: replyMsg
+      });
+    }
+    
   });
     
   res.json({success: true});

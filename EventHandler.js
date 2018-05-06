@@ -55,18 +55,42 @@ module.exports ={
       break;
     }
     return return_msg;
+  },
+  postback : async (userId, data ) =>{
+
+    let return_msg = [{type: 'text', text:'Postback function was called'}];
+    return return_msg;
   }
 }
 function getCarousel(){
   return {
     "type": "template",
-    "altText": "this is a carousel template",
+    "altText": "Please provide more info",
     "template": {
         "type": "carousel",
         "columns": [
             {
-              "title": "this is menu",
-              "text": "description",
+              "text": "Please report guilty",
+              "actions": [
+                  {
+                      "type": "postback",
+                      "label": "Buy",
+                      "data": "action=buy&itemid=111"
+                  },
+                  {
+                      "type": "postback",
+                      "label": "Add to cart",
+                      "data": "action=add&itemid=111"
+                  },
+                  {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/111"
+                  }
+              ]
+            },
+            {
+              "text": "Please report guilty",
               "actions": [
                   {
                       "type": "postback",
