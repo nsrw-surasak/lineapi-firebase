@@ -37,12 +37,15 @@ module.exports ={
       .get();
     return snapshot;
   },
-  addCheckList : async (userId, status, timestamp)  => {
+  addCheckList : async (userId, status, timestamp, cause)  => {
     let postData = {
         userId : userId,
         status: status,
         timestamp: timestamp,
       };
+    if (cause){
+      postData.cause = cause;
+    }
     return await userCheckList.add(postData);
   },
   getCheckListByTime : async ( timestart, timeend)  => {
@@ -65,13 +68,26 @@ module.exports ={
       .limit(1)
       .get();
 
-    snapshot.forEach(async element => {
-      let update_data = { status: status};
+    if (!snapshot.empty){
+      snapshot.forEach(async element => {
+        let update_data = { status: status};
+        if (cause){
+          update_data.cause = cause;
+        }
+        return  await userCheckList.doc(element.id).update(update_data);
+      })
+    }
+    else{
+      let d = new Date();
+      let postData = {
+        userId : userId,
+        status: status,
+        timestamp: d.getTime(),
+      };
       if (cause){
-        update_data.cause = cause;
+        postData.cause = cause;
       }
-      const data = await userCheckList.doc(element.id).update(update_data)
-      return data;
-    })
+      return await userCheckList.add(postData);
+    }
   }
 };
