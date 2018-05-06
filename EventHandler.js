@@ -5,11 +5,11 @@ const MORNING_CMD = 'Morning confirm';
 const SELF_CHK_CMD = 'Self-Check';
 const ZONE_CONFIRM_CMD = 'Zone Confirm';
 const LEAVE_CMD = 'Leave';
-const NG_CMD = 'NG';
+const NG_CMD = 'Incomplete';
 
 // Status
 const OK = 'OK';
-const NG = 'Incomplete';
+const NG = NG_CMD;
 const CONFIRM = 'CONFIRM'
 const LEAVE = 'LEAVE';
 const NG_GUILTY = NG + '_GUITY';
