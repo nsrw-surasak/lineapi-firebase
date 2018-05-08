@@ -33,7 +33,7 @@ module.exports ={
         return_msg[0].text = 'Enjoy!';
       break; 
       case (NG_CMD):
-        return_msg[0] = getCarousel();
+        return_msg[0] = getCarousel(userId);
       break;
       default:
         let userData = await fbAPI.getUserById(userId);
@@ -66,9 +66,14 @@ module.exports ={
       userlist.push({name: element.data().name, id: element.data().userId})
     })
     return userlist;
+  },
+  submitCause : async (userId, cause) => {
+
+    let userData = await fbAPI.updateUserStatus(userId,NG, cause);
+    return userData;
   }
 }
-function getCarousel(){
+function getCarousel(userId){
   return {
     "type": "template",
     "altText": "Please provide more info",
@@ -81,7 +86,7 @@ function getCarousel(){
                   {
                       "type": "uri",
                       "label": "View detail",
-                      "uri": "https://lineapi-firebase.herokuapp.com/checklist"
+                      "uri": "https://lineapi-firebase.herokuapp.com/checklist?userId=" + userId
                   }
               ]
             }
