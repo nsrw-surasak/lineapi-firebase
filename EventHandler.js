@@ -12,8 +12,6 @@ const OK = 'OK';
 const NG = NG_CMD;
 const CONFIRM = 'CONFIRM'
 const LEAVE = 'LEAVE';
-const NG_GUILTY = NG + '_GUITY';
-const NG_GUILTY_CAUSE = NG + '_GUILTY_CAUSE';
 
 module.exports ={
   main : async (userId, message) => {
@@ -60,6 +58,14 @@ module.exports ={
 
     let return_msg = [{type: 'text', text:'Postback function was called'}];
     return return_msg;
+  },
+  getUserlistByZone : async (zone) => {
+    let userlist = [];
+    let userData = await fbAPI.getUserByZone(zone);
+    userData.forEach(element => {
+      userlist.push({name: element.data().name, id: element.data().userId})
+    })
+    return userlist;
   }
 }
 function getCarousel(){
@@ -70,42 +76,12 @@ function getCarousel(){
         "type": "carousel",
         "columns": [
             {
-              "text": "Please report guilty",
+              "text": "Please report culprit",
               "actions": [
-                  {
-                      "type": "postback",
-                      "label": "Buy",
-                      "data": "action=buy&itemid=111"
-                  },
-                  {
-                      "type": "postback",
-                      "label": "Add to cart",
-                      "data": "action=add&itemid=111"
-                  },
                   {
                       "type": "uri",
                       "label": "View detail",
-                      "uri": "http://example.com/page/111"
-                  }
-              ]
-            },
-            {
-              "text": "Please report guilty",
-              "actions": [
-                  {
-                      "type": "postback",
-                      "label": "Buy",
-                      "data": "action=buy&itemid=111"
-                  },
-                  {
-                      "type": "postback",
-                      "label": "Add to cart",
-                      "data": "action=add&itemid=111"
-                  },
-                  {
-                      "type": "uri",
-                      "label": "View detail",
-                      "uri": "http://example.com/page/111"
+                      "uri": "https://lineapi-firebase.herokuapp.com/checklist"
                   }
               ]
             }
