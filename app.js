@@ -70,7 +70,7 @@ app.post('/submit_report/', async (req, res, next) => {
   let causes = req.body.cause;
   let culprits = req.body.culprit;
   res.set('Content-Type', 'text/html');  
-  console.log(causes.length)
+  
   if (causes.length > 0){
     let iCulprit = 0;
     for (let i in causes){
