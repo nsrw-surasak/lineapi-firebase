@@ -2,10 +2,11 @@ const fbAPI = require('./firebaseAPI.js');
 
 
 const MORNING_CMD = 'Morning confirm';
-const SELF_CHK_CMD = 'Self-Check';
+const SELF_CHK_CMD = 'Self-check';
 const ZONE_CONFIRM_CMD = 'Zone Confirm';
 const LEAVE_CMD = 'Leave';
 const NG_CMD = 'Incomplete';
+const ABOUT_CMD = 'About';
 
 // Status
 const OK = 'OK';
@@ -35,10 +36,13 @@ module.exports ={
       case (NG_CMD):
         return_msg[0] = getCarousel(userId);
       break;
+      case (ABOUT_CMD):
+        return_msg[0].text = 'SDC-Safety developed by Narut T., and Surasak N.';
+      breake;
       default:
         let userData = await fbAPI.getUserById(userId);
         if (userData._size > 0){
-          return_msg[0].text  = 'Please Select Command from Menu below';
+          return_msg[0].text  = 'No response from your command';
         }
         else{
           let reg = /^[a-z ,.'-]+$/i;
