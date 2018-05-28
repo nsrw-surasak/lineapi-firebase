@@ -38,7 +38,7 @@ module.exports ={
       break;
       case (ABOUT_CMD):
         return_msg[0].text = 'SDC-Safety developed by Narut T., and Surasak N.';
-      breake;
+      break;
       default:
         let userData = await fbAPI.getUserById(userId);
         if (userData._size > 0){
