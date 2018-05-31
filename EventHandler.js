@@ -13,6 +13,7 @@ const OK = 'OK';
 const NG = NG_CMD;
 const CONFIRM = 'CONFIRM'
 const LEAVE = 'LEAVE';
+const MORNING_CHK = 'MORNING_CHECK';
 
 // Confirm 
 const CONFIRM_TXT  = 'confirm=';
@@ -25,11 +26,10 @@ module.exports ={
     let timestamp = d.getTime();
     switch (message){
       case (MORNING_CMD):
-      return_msg[0].text = 'Welcome';
+        await fbAPI.addCheckList(userId,MORNING_CHK, timestamp) 
+        return_msg[0].text = 'Welcome';
       break;
       case (SELF_CHK_CMD):
-        // await fbAPI.addCheckList(userId,OK, timestamp )
-        // return_msg[0].text = 'Checked';
         return_msg[0] = getConfirmCarousel();
       break;
       case (ZONE_CONFIRM_CMD):
