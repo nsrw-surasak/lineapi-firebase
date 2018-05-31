@@ -71,6 +71,7 @@ module.exports ={
     let return_msg = [{type: 'text', text:''}];
     if (data.indexOf(CONFIRM_TXT) > -1){
       let answer = data.split(CONFIRM_TXT);
+      console.log(answer)
       if (answer == YES){
         await fbAPI.addCheckList(userId,OK, timestamp )
         return_msg[0].text = 'Checked';
