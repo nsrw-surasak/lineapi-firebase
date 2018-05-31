@@ -56,8 +56,8 @@ app.get('/checklist/', async (req, res, next) => {
                   '<option value="checklist1">(1) Turn off switch of each power strip</option>' + 
                   '<option value="checklist2">(2) Clear the food and drink on own desk</option>' + 
                   '<option value="checklist3">(3) Labtop/Notebook is locked</option>' + 
-                  '<option value="checklist4">(4) Push your chair under table</option>'+
-		  '<option value="checklist5">(5) Cabinet is locked</option>'+
+                  '<option value="checklist4">(4) Put your chair under table</option>'+
+		              '<option value="checklist5">(5) Cabinet is locked</option>'+
                   '</select>';
     userlistStr += '<tr><td>' + userlist[i].name + '</td><td>' + selectStr + '</td></tr>';
   }

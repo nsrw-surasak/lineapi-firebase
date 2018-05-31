@@ -14,23 +14,30 @@ const NG = NG_CMD;
 const CONFIRM = 'CONFIRM'
 const LEAVE = 'LEAVE';
 
+// Confirm 
+const CONFIRM_TXT  = 'confirm=';
+const YES = 'yes';
+const NO = 'no';
 module.exports ={
   main : async (userId, message) => {
     let return_msg = [{type: 'text', text:'Please Select Command from Menu below'}];
+    let d = new Date();
+    let timestamp = d.getTime();
     switch (message){
       case (MORNING_CMD):
       return_msg[0].text = 'Welcome';
       break;
       case (SELF_CHK_CMD):
-        await fbAPI.updateUserStatus(userId,OK, '')
-        return_msg[0].text = 'Checked';
+        // await fbAPI.addCheckList(userId,OK, timestamp )
+        // return_msg[0].text = 'Checked';
+        return_msg[0] = getConfirmCarousel();
       break;
       case (ZONE_CONFIRM_CMD):
-        await fbAPI.updateUserStatus(userId,CONFIRM, '') 
+        await fbAPI.addCheckList(userId,CONFIRM, timestamp) 
         return_msg[0].text = 'Confirmed';
       break;
       case (LEAVE_CMD):
-        await fbAPI.updateUserStatus(userId,LEAVE, '') 
+        await fbAPI.addCheckList(userId,LEAVE, timestamp) 
         return_msg[0].text = 'Enjoy!';
       break; 
       case (NG_CMD):
@@ -59,8 +66,17 @@ module.exports ={
     return return_msg;
   },
   postback : async (userId, data ) =>{
+    let return_msg = [{type: 'text', text:''}];
+    if (data.indexOf(CONFIRM_TXT) > -1){
+      let answer = data.split(CONFIRM_TXT)[0];
+      if (answer == YES){
+        return_msg.text = 'Checked';
+      }else{
+        return_msg.text = 'Unchecked';
+      }
+      
+    }
 
-    let return_msg = [{type: 'text', text:'Postback function was called'}];
     return return_msg;
   },
   getUserlistByZone : async (zone) => {
@@ -91,6 +107,36 @@ function getCarousel(userId){
                       "type": "uri",
                       "label": "View detail",
                       "uri": "https://lineapi-firebase.herokuapp.com/checklist?userId=" + userId
+                  }
+              ]
+            }
+        ],
+    }
+  }
+}
+function getConfirmCarousel(){
+  return {
+    "type": "template",
+    "altText": "Please review checklist",
+    "template": {
+        "type": "carousel",
+        "columns": [
+            {
+              "text": "1) Turn off switch\n" + 
+              "2) Clear food and drink\n"+
+              "3) Labtop is locked\n"+
+              "4) Put your chair under table\n"+
+              "5) Cabinet is locked\n",
+              "actions": [
+                  {
+                      "type": "postback",
+                      "label": "Yes",
+                      "data": CONFIRM_TXT + YES
+                  },
+                  {
+                    "type": "postback",
+                    "label": "No",
+                    "data": CONFIRM_TXT + NO
                   }
               ]
             }
