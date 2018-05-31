@@ -66,13 +66,16 @@ module.exports ={
     return return_msg;
   },
   postback : async (userId, data ) =>{
+    let d = new Date();
+    let timestamp = d.getTime();
     let return_msg = [{type: 'text', text:''}];
     if (data.indexOf(CONFIRM_TXT) > -1){
       let answer = data.split(CONFIRM_TXT)[0];
       if (answer == YES){
-        return_msg.text = 'Checked';
+        await fbAPI.addCheckList(userId,OK, timestamp )
+        return_msg[0].text = 'Checked';
       }else{
-        return_msg.text = 'Unchecked';
+        return_msg[0].text = 'Unchecked';
       }
       
     }
