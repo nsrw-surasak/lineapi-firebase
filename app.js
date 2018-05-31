@@ -77,7 +77,7 @@ app.get('/checklist/', async (req, res, next) => {
                 userlistStr +
                 '</tbody>' + 
                 '</table>' + 
-                '<input style="text-align:center" type="submit" value="Submit"></form>';
+                '<div style="text-align:center"><input style="text-align:center" type="submit" value="Submit"></div></form>';
 
   res.send(new Buffer(htmlStr));
 })
