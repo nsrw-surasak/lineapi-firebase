@@ -133,7 +133,7 @@ function getConfirmCarousel(){
               "actions": [
                   {
                       "type": "postback",
-                      "label": "Yes",
+                      "label": "Confirm",
                       "data": CONFIRM_TXT + YES
                   },
                   {
