@@ -62,32 +62,16 @@ module.exports ={
     return snapshot;
   },
   updateUserStatus : async ( userId, status, cause)  => {
-    const snapshot = await userCheckList
-      .where('userId', '==', userId)
-      .orderBy("timestamp", "desc")
-      .limit(1)
-      .get();
-
-    if (!snapshot.empty){
-      snapshot.forEach(async element => {
-        let update_data = { status: status};
-        if (cause){
-          update_data.cause = cause;
-        }
-        return  await userCheckList.doc(element.id).update(update_data);
-      })
+    let d = new Date();
+    let postData = {
+      userId : userId,
+      status: status,
+      timestamp: d.getTime(),
+    };
+    if (cause){
+      postData.cause = cause;
     }
-    else{
-      let d = new Date();
-      let postData = {
-        userId : userId,
-        status: status,
-        timestamp: d.getTime(),
-      };
-      if (cause){
-        postData.cause = cause;
-      }
-      return await userCheckList.add(postData);
-    }
+    return await userCheckList.add(postData);
   }
+
 };
