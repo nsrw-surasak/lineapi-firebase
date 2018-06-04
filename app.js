@@ -76,7 +76,7 @@ app.get('/checklist/', async (req, res, next) => {
                 '<h2>Report Form</h2>' + 
                 '<form action="/submit_report" method="post"> ' + 
                 '<input type="hidden" name="userId" value="' + reqId + '">' +
-                '<table class="table">' + 
+                '<table class="table table-hover">' + 
                 '<tbody>' + 
                 userlistStr +
                 '</tbody>' + 
@@ -130,7 +130,7 @@ app.get('/summary/', async (req, res, next) => {
                   '<h5>' + RED_GLYPHICON + ': Defective' + '</h5>' + 
                   '<h5>' + BLUE_GLYPHICON + ': Leave' + '</h5>';
   let htmlStr = HEADER_HTML +
-                '<table class="table">\n' + 
+                '<table class="table table-hover">\n' + 
                 '<thead><tr><td> Name/Date </td>'+ 
                 tableHeader_html + 
                 '</tr></thead>\n'+
@@ -142,6 +142,39 @@ app.get('/summary/', async (req, res, next) => {
               
   res.send(new Buffer(htmlStr));
 })
-app.listen(process.env.PORT || 80, () => {
+app.get('/confirm_report/', async (req, res, next) => {
+  res.set('Content-Type', 'text/html');  
+  let d = new Date();
+  let month = d.getMonth();
+  let year = d.getFullYear();
+  if (req.query.month){
+    month = req.query.month;
+  }
+	let checkList =  await eventHandler.comfirmReport(req.query.month);
+  
+  let tableContent_html = '';
+  for (let date in checkList){
+    let confirm = checkList[date].confirm || '';
+    let morning = checkList[date].morning || '';
+
+    tableContent_html += '<tr>';
+    tableContent_html += '<td>' + checkList[date].time +'</td>';
+    tableContent_html += '<td>' + confirm +'</td>';
+    tableContent_html += '<td>' + morning +'</td>';
+    tableContent_html += '</tr>\n';
+  }
+
+  let htmlStr = HEADER_HTML +
+                '<table class="table table-hover">\n' + 
+                '<thead><tr><td> Date </td><td> Confirm </td><td> Morning Confirm </td>'+ 
+                '</tr></thead>\n'+
+                '<tbody>\n' +
+                tableContent_html + 
+                '</tbody>\n' +
+                '</table>\n';
+              
+  res.send(new Buffer(htmlStr));
+})
+app.listen(process.env.PORT || 3800, () => {
   console.log('Example app listening on port 80!')
 })

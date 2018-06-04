@@ -125,18 +125,64 @@ module.exports ={
       }
     });
 
-    
-
     checklist_raw.forEach(element => {
       let d = new Date(element.data().timestamp + TIMEZONE_OFFSET);
       let date = d.getDate() - 1;
-      if (userlist[element.data().userId]){
+      if (userlist[element.data().userId] ){
         userlist[element.data().userId][date]['status'] = element.data().status;
         userlist[element.data().userId][date]['time'] = d.getHours() + ':' + d.getMinutes();
       }
       
     });
     return userlist;
+  },
+  comfirmReport : async (month) => {
+
+    let userList_raw = await fbAPI.getUserByZone(-1);
+
+    let start = new Date();
+    let end = new Date();
+
+    if (month && month > 0 && month < 12){
+      start.setMonth(month - 1);
+      end.setMonth(month - 1);
+    }
+
+    start.setDate(1);
+    end.setMonth(end.getMonth() + 1);
+    end.setDate(0)
+
+    start = new Date(start.getTime() + TIMEZONE_OFFSET);
+    end = new Date(end.getTime() + TIMEZONE_OFFSET);
+    let checklist_raw = await fbAPI.getCheckListByTime(start.getTime(), end.getTime());
+
+    let userlist = {};
+    userList_raw.forEach(element => {
+      userlist[element.data().userId] = {name : element.data().name};
+      
+    });
+
+    let checkList = {};
+
+    checklist_raw.forEach(element => {
+      let d = new Date(element.data().timestamp + TIMEZONE_OFFSET);
+      let date = d.getDate();
+      let summittedDate = Object.keys(checkList);
+      if (checkList[date] == undefined){
+        checkList[date] = {};
+      }
+      
+      checkList[date]['time'] = d.getFullYear() + '-' +  d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes();
+      if ((element.data().status != LEAVE) && (element.data().status != MORNING_CHK) && userlist[element.data().userId]){
+        checkList[date]['confirm'] = userlist[element.data().userId].name; 
+      }
+      if (element.data().status == MORNING_CHK && userlist[element.data().userId] && 
+        summittedDate.length > 1){
+        let prev_date = summittedDate[summittedDate.length - 2];
+        checkList[prev_date]['morning'] = userlist[element.data().userId].name; 
+      }
+    });
+    return checkList;
   }
 }
 function getCarousel(userId){
