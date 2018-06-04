@@ -99,7 +99,7 @@ app.post('/submit_report/', async (req, res, next) => {
 })
 app.get('/summary/', async (req, res, next) => {
   res.set('Content-Type', 'text/html');  
-	let userlist =  await eventHandler.summary();
+	let userlist =  await eventHandler.summary(req.query.month);
   let tableHeader_html = '';
   
   for (let date = 1; date <= MAX_DATE; date++){
