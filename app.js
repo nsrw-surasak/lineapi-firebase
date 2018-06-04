@@ -13,7 +13,10 @@ const HEADER_HTML = '<script src="https://code.jquery.com/jquery-3.3.1.slim.min.
 'integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>' +
 '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">' +
 '<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>';
-
+const MAX_DATE = 31;
+const GREEN_GLYPHICON = '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="color:green"></span>';
+const RED_GLYPHICON = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color:red">"</span>';
+const BLUE_GLYPHICON =  '<span class="glyphicon glyphicon-tent" aria-hidden="true" style="color:blue"></span>';
 // need raw buffer for signature validation
 app.use(bodyParser.json({
   verify (req, res, buf) {
@@ -95,13 +98,48 @@ app.post('/submit_report/', async (req, res, next) => {
   res.send(new Buffer(htmlStr));
 })
 app.get('/summary/', async (req, res, next) => {
-	let userlist =  await eventHandler.getUserlistByZone(-1);
-
-
+  res.set('Content-Type', 'text/html');  
+	let userlist =  await eventHandler.summary();
+  let tableHeader_html = '';
+  
+  for (let date = 1; date <= MAX_DATE; date++){
+    tableHeader_html += '<td>' + date + '</td>';
+  }
+  let tableContent_html = '';
+  for (let id in userlist){
+    let name = userlist[id].name;
+    tableContent_html += '<tr>';
+    tableContent_html += '<td>' + name +'</td>';
+    for (let date = 0; date < MAX_DATE; date++){
+      let status = userlist[id][date].status;
+      let glyphicon = '';
+      if (status == 'OK' || status == 'CONFIRM'){
+        glyphicon = GREEN_GLYPHICON;
+      }else if (status == 'Incomplete'){
+        glyphicon = RED_GLYPHICON;
+      }
+      else if (status == 'LEAVE'){
+        glyphicon = BLUE_GLYPHICON;
+      }
+    
+      tableContent_html += '<td>' + glyphicon + '</td>';
+    }
+    tableContent_html += '</tr>\n';
+  }
+  let abbr_html = '<h5>' + GREEN_GLYPHICON + ': OK or CONFIRM' + '</h5>' + 
+                  '<h5>' + RED_GLYPHICON + ': Defective' + '</h5>' + 
+                  '<h5>' + BLUE_GLYPHICON + ': Leave' + '</h5>';
   let htmlStr = HEADER_HTML +
-                '<h2>Report Form</h2>' + 
-               
-
+                '<table class="table">\n' + 
+                '<thead><tr><td> Name/Date </td>'+ 
+                tableHeader_html + 
+                '</tr></thead>\n'+
+                '<tbody>\n' +
+                tableContent_html + 
+                '</tbody>\n' +
+                '</table>\n' + 
+                abbr_html;
+              
   res.send(new Buffer(htmlStr));
 })
 app.listen(process.env.PORT || 80, () => {

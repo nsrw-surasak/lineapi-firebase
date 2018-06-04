@@ -19,6 +19,8 @@ const MORNING_CHK = 'MORNING_CHECK';
 const CONFIRM_TXT  = 'confirm=';
 const YES = 'yes';
 const NO = 'no';
+
+const TIMEZONE_OFFSET = 25200;
 module.exports ={
   main : async (userId, message) => {
     let return_msg = [{type: 'text', text:'Please Select Command from Menu below'}];
@@ -111,31 +113,30 @@ module.exports ={
     end.setMonth(end.getMonth() + 1);
     end.setDate(0)
 
+    start = new Date(start.getTime() + TIMEZONE_OFFSET);
+    end = new Date(end.getTime() + TIMEZONE_OFFSET);
     let checklist_raw = await fbAPI.getCheckListByTime(start.getTime(), end.getTime());
 
     let userlist = {};
     userList_raw.forEach(element => {
       userlist[element.data().userId] = {name : element.data().name};
-    });
-
-    let checklist = [];
-    checklist[0] = {};
-    checklist[30] = {};
-    for (let i= 0 ; i < checklist.length; i++){
-      checklist[i] = userlist;
-    }
-
-
-    checklist_raw.forEach(element => {
-      let d = new Date(element.data().timestamp);
-      let date = d.getDate();
-      checklist[date][element.data().userId]['status'] = element.data().status;
-      checklist[date][element.data().userId]['time'] = d.getHours() + ':' + d.getMinutes();
+      for (let i= 0 ; i < 31; i++){
+        userlist[element.data().userId][i] = {status:'',cause : '', time: ''};
+      }
     });
 
     
 
-    return checklist;
+    checklist_raw.forEach(element => {
+      let d = new Date(element.data().timestamp + TIMEZONE_OFFSET);
+      let date = d.getDate() - 1;
+      if (userlist[element.data().userId]){
+        userlist[element.data().userId][date]['status'] = element.data().status;
+        userlist[element.data().userId][date]['time'] = d.getHours() + ':' + d.getMinutes();
+      }
+      
+    });
+    return userlist;
   }
 }
 function getCarousel(userId){
