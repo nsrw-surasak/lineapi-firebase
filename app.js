@@ -136,7 +136,7 @@ app.get('/summary/', async (req, res, next) => {
                   '<h5>' + BLUE_GLYPHICON + ': Leave' + '</h5>';
   let htmlStr = HEADER_HTML +
                 '<h3> Summary Security Report for Month ' + month + '</h3>' +
-                '<table class="table table-hover">\n' + 
+                '<table class="table table-striped">\n' + 
                 '<thead><tr><td> Name/Date </td>'+ 
                 tableHeader_html + 
                 '</tr></thead>\n'+
@@ -172,7 +172,7 @@ app.get('/confirm_report/', async (req, res, next) => {
 
   let htmlStr = HEADER_HTML +
                 '<h3> Summary Security Confirmation Report for Month ' + month + '</h3>' + 
-                '<table class="table table-hover">\n' + 
+                '<table class="table table-striped">\n' + 
                 '<thead><tr><td> Date </td><td> Confirm </td><td> Morning Confirm </td>'+ 
                 '</tr></thead>\n'+
                 '<tbody>\n' +
