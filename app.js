@@ -98,7 +98,12 @@ app.post('/submit_report/', async (req, res, next) => {
   res.send(new Buffer(htmlStr));
 })
 app.get('/summary/', async (req, res, next) => {
-  res.set('Content-Type', 'text/html');  
+  res.set('Content-Type', 'text/html'); 
+  let d = new Date();
+  let month = d.getMonth();
+  if (req.query.month){
+    month = req.query.month;
+  } 
 	let userlist =  await eventHandler.summary(req.query.month);
   let tableHeader_html = '';
   
@@ -130,6 +135,7 @@ app.get('/summary/', async (req, res, next) => {
                   '<h5>' + RED_GLYPHICON + ': Defective' + '</h5>' + 
                   '<h5>' + BLUE_GLYPHICON + ': Leave' + '</h5>';
   let htmlStr = HEADER_HTML +
+                '<h3> Summary Security Report for Month' + month + '</h3>' +
                 '<table class="table table-hover">\n' + 
                 '<thead><tr><td> Name/Date </td>'+ 
                 tableHeader_html + 
@@ -165,6 +171,7 @@ app.get('/confirm_report/', async (req, res, next) => {
   }
 
   let htmlStr = HEADER_HTML +
+                '<h3> Summary Security Confirmation Report for Month' + month + '</h3>' + 
                 '<table class="table table-hover">\n' + 
                 '<thead><tr><td> Date </td><td> Confirm </td><td> Morning Confirm </td>'+ 
                 '</tr></thead>\n'+
