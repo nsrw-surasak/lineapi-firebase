@@ -52,6 +52,7 @@ module.exports ={
     const snapshot = await userCheckList
       .where('timestamp', '>=', timestart)
       .where('timestamp', '<', timeend)
+      .orderBy("timestamp", "asc")
       .get();
     return snapshot;
   },

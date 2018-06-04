@@ -94,6 +94,48 @@ module.exports ={
 
     let userData = await fbAPI.updateUserStatus(userId,NG, cause);
     return userData;
+  },
+  summary : async (month) => {
+
+    let userList_raw = await fbAPI.getUserByZone(-1);
+
+    let start = new Date();
+    let end = new Date();
+
+    if (month && month > 0 && month < 12){
+      start.setMonth(month - 1);
+      end.setMonth(month - 1);
+    }
+
+    start.setDate(1);
+    end.setMonth(end.getMonth() + 1);
+    end.setDate(0)
+
+    let checklist_raw = await fbAPI.getCheckListByTime(start.getTime(), end.getTime());
+
+    let userlist = {};
+    userList_raw.forEach(element => {
+      userlist[element.data().userId] = {name : element.data().name};
+    });
+
+    let checklist = [];
+    checklist[0] = {};
+    checklist[30] = {};
+    for (let i= 0 ; i < checklist.length; i++){
+      checklist[i] = userlist;
+    }
+
+
+    checklist_raw.forEach(element => {
+      let d = new Date(element.data().timestamp);
+      let date = d.getDate();
+      checklist[date][element.data().userId]['status'] = element.data().status;
+      checklist[date][element.data().userId]['time'] = d.getHours() + ':' + d.getMinutes();
+    });
+
+    
+
+    return checklist;
   }
 }
 function getCarousel(userId){
