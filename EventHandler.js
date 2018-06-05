@@ -189,7 +189,7 @@ module.exports ={
         checkList[date] = {};
       }
       
-      checkList[date]['time'] = d.getFullYear() + '-' +  d.getMonth() + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes();
+      checkList[date]['time'] = d.getFullYear() + '-' +  (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes();
       if ((element.data().status != LEAVE) && (element.data().status != MORNING_CHK) && userlist[element.data().userId]){
         checkList[date]['confirm'] = userlist[element.data().userId].name; 
       }
