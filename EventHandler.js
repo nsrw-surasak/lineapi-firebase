@@ -162,8 +162,12 @@ module.exports ={
     }
 
     start.setDate(1);
+    start.setHours(0);
+    start.setMinutes(0)
     end.setMonth(end.getMonth() + 1);
     end.setDate(0)
+    end.setHours(0);
+    end.setMinutes(0);
 
     start = new Date(start.getTime() + TIMEZONE_OFFSET);
     end = new Date(end.getTime() + TIMEZONE_OFFSET);
