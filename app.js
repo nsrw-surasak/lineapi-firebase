@@ -121,7 +121,7 @@ app.get('/summary/', async (req, res, next) => {
       if (status == 'OK' || status == 'CONFIRM'){
         glyphicon = GREEN_GLYPHICON;
       }else if (status == 'Incomplete'){
-        glyphicon = RED_GLYPHICON;
+        glyphicon = RED_GLYPHICON + userlist[id][date].cause;
       }
       else if (status == 'LEAVE'){
         glyphicon = BLUE_GLYPHICON;
@@ -131,20 +131,25 @@ app.get('/summary/', async (req, res, next) => {
     }
     tableContent_html += '</tr>\n';
   }
-  let abbr_html = '<h5>' + GREEN_GLYPHICON + ': OK or CONFIRM' + '</h5>' + 
-                  '<h5>' + RED_GLYPHICON + ': Defective' + '</h5>' + 
-                  '<h5>' + BLUE_GLYPHICON + ': Leave' + '</h5>';
+  let abbr_html = '<div class="col-sm-6">' + GREEN_GLYPHICON + ': OK or CONFIRM<br>'  + 
+                  RED_GLYPHICON + ': Defective <br>'  + 
+                  BLUE_GLYPHICON + ': Leave </div>';
+  let abbr2_html = '<div class="col-sm-6"> Defect 1 : Turn off switch' + 
+                  '<br>Defect 2 : Clear food and drink' + 
+                  '<br>Defect 3 : Labtop is locked ' +
+                  '<br>Defect 4 : Put your chair under table ' +
+                  '<br>Defect 5 : Cabinet is locked</div>';
   let htmlStr = HEADER_HTML +
-                '<h3> Summary Security Report for Month ' + month + '</h3>' +
-                '<table class="table table-striped">\n' + 
+                '<div class="container"><h3> Summary Security Report for Month ' + month + '</h3>' +
+                '<div class="row"><table class="table table-striped">\n' + 
                 '<thead><tr><td> Name/Date </td>'+ 
                 tableHeader_html + 
                 '</tr></thead>\n'+
                 '<tbody>\n' +
                 tableContent_html + 
                 '</tbody>\n' +
-                '</table>\n' + 
-                abbr_html;
+                '</table></div>\n' + 
+                '<div class="row">' + abbr2_html + abbr_html + '</div></div>';
               
   res.send(new Buffer(htmlStr));
 })

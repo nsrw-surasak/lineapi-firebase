@@ -135,6 +135,15 @@ module.exports ={
       if (userlist[element.data().userId] ){
         userlist[element.data().userId][date]['status'] = element.data().status;
         userlist[element.data().userId][date]['time'] = d.getHours() + ':' + d.getMinutes();
+        if (element.data().status == NG){
+          let cause = element.data().cause;
+          userlist[element.data().userId][date]['status'] = OK;
+          for (let culprit in cause){
+            userlist[culprit][date]['status'] = NG;
+            let causeStr = cause[culprit].toString();
+            userlist[culprit][date]['cause'] = causeStr.replace('checklist','');
+          }
+        }
       }
       
     });
