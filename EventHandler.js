@@ -117,8 +117,8 @@ module.exports ={
     end.setHours(0);
     end.setMinutes(0);
 
-    start = new Date(start.getTime() + TIMEZONE_OFFSET);
-    end = new Date(end.getTime() + TIMEZONE_OFFSET);
+    start = new Date(start.getTime() - (start.getTimezoneOffset()* 60));
+    end = new Date(end.getTime() - (end.getTimezoneOffset()*60));
     let checklist_raw = await fbAPI.getCheckListByTime(start.getTime(), end.getTime());
 
     let userlist = {};
@@ -130,7 +130,8 @@ module.exports ={
     });
 
     checklist_raw.forEach(element => {
-      let d = new Date(element.data().timestamp + TIMEZONE_OFFSET);
+      let d = new Date(element.data().timestamp);
+      d = new Date(element.data().timestamp - (d.getTimezoneOffset()*60));
       let date = d.getDate() - 1;
       if (userlist[element.data().userId] ){
         userlist[element.data().userId][date]['status'] = element.data().status;
