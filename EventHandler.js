@@ -21,6 +21,7 @@ const YES = 'yes';
 const NO = 'no';
 
 const TIMEZONE_OFFSET = 25200;
+const HOUR_OFFSET = 7;
 module.exports ={
   main : async (userId, message) => {
     let return_msg = [{type: 'text', text:'Please Select Command from Menu below'}];
@@ -131,11 +132,16 @@ module.exports ={
 
     checklist_raw.forEach(element => {
       let d = new Date(element.data().timestamp);
-      d = new Date(element.data().timestamp - (d.getTimezoneOffset()*60));
-      let date = d.getDate() - 1;
+
+      let date = d.getUTCDate() - 1;
+      let hours = d.getUTCHours() + HOUR_OFFSET;
+      if (hours > 24){
+        date = date + 1;
+        hours = hours - 24;
+      }
       if (userlist[element.data().userId] ){
         userlist[element.data().userId][date]['status'] = element.data().status;
-        userlist[element.data().userId][date]['time'] = d.getHours() + ':' + d.getMinutes();
+        userlist[element.data().userId][date]['time'] = hours + ':' + d.getMinutes();
         if (element.data().status == NG){
           let cause = element.data().cause;
           userlist[element.data().userId][date]['status'] = OK;
