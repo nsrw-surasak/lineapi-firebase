@@ -193,16 +193,12 @@ app.post('/notification/', async (req, res, next) => {
     for (let i in userlist){
       await line.client
       .pushMessage({
-        to: 'U8a4c7cce34ab8630e4e6f480e77a1358',
+        to: userlist[i].id,
         messages:[
             {
                 "type":"text",
                 "text":"Please DO NOT Forget to check your desk"
-            },
-            {
-              "type":"text",
-              "text": userlist[i].id
-          }
+            }
         ]
       });
     }
