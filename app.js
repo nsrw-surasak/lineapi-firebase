@@ -189,20 +189,24 @@ app.get('/confirm_report/', async (req, res, next) => {
 })
 app.post('/notification/', async (req, res, next) => {
   try {
-    await line.client
-    .pushMessage({
-      to: 'U8a4c7cce34ab8630e4e6f480e77a1358',
-      messages:[
-          {
+    let userlist =  await eventHandler.getUserlistByZone(-1);
+    for (let i in userlist){
+      await line.client
+      .pushMessage({
+        to: 'U8a4c7cce34ab8630e4e6f480e77a1358',
+        messages:[
+            {
+                "type":"text",
+                "text":"Please DO NOT Forget to check your desk"
+            },
+            {
               "type":"text",
-              "text":"Hello, world1"
-          },
-          {
-              "type":"text",
-              "text":"Hello, world2"
+              "text": userlist[i].id
           }
-      ]
-    });
+        ]
+      });
+    }
+    
   }catch(e){
     console.error(e);
   }
