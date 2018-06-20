@@ -191,7 +191,7 @@ app.post('/notification/', async (req, res, next) => {
   try {
     await line.client
     .pushMessage({
-      to: ['U8a4c7cce34ab8630e4e6f480e77a1358'],
+      to: 'U8a4c7cce34ab8630e4e6f480e77a1358',
       messages:[
           {
               "type":"text",
