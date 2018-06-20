@@ -206,8 +206,11 @@ app.post('/notification/', async (req, res, next) => {
   }catch(e){
     console.error(e);
   }
+  finally{
+    res.json({success: true});
+  }
   
-  res.json({success: true});
+  
 })
 app.listen(process.env.PORT || 80, () => {
   console.log('Example app listening on port 80!')
