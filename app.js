@@ -188,20 +188,25 @@ app.get('/confirm_report/', async (req, res, next) => {
   res.send(new Buffer(htmlStr));
 })
 app.post('/notification/', async (req, res, next) => {
-  line.client
-  .pushMessage({
-    to: ['U8a4c7cce34ab8630e4e6f480e77a1358'],
-    messages:[
-        {
-            "type":"text",
-            "text":"Hello, world1"
-        },
-        {
-            "type":"text",
-            "text":"Hello, world2"
-        }
-    ]
-  });
+  try {
+    await line.client
+    .pushMessage({
+      to: ['U8a4c7cce34ab8630e4e6f480e77a1358'],
+      messages:[
+          {
+              "type":"text",
+              "text":"Hello, world1"
+          },
+          {
+              "type":"text",
+              "text":"Hello, world2"
+          }
+      ]
+    });
+  }catch(e){
+    console.error(e);
+  }
+  
   res.json({success: true});
 })
 app.listen(process.env.PORT || 80, () => {
