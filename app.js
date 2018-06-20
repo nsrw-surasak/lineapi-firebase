@@ -187,6 +187,22 @@ app.get('/confirm_report/', async (req, res, next) => {
               
   res.send(new Buffer(htmlStr));
 })
+app.post('/notification/', async (req, res, next) => {
+  line.client
+  .pushMessage({
+    to: ['U8a4c7cce34ab8630e4e6f480e77a1358'],
+    messages:[
+        {
+            "type":"text",
+            "text":"Hello, world1"
+        },
+        {
+            "type":"text",
+            "text":"Hello, world2"
+        }
+    ]
+  })
+})
 app.listen(process.env.PORT || 80, () => {
   console.log('Example app listening on port 80!')
 })
