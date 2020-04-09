@@ -17,6 +17,7 @@ const MAX_DATE = 31;
 const GREEN_GLYPHICON = '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="color:green"></span>';
 const RED_GLYPHICON = '<span class="glyphicon glyphicon-remove-sign" aria-hidden="true" style="color:red">"</span>';
 const BLUE_GLYPHICON =  '<span class="glyphicon glyphicon-tent" aria-hidden="true" style="color:blue"></span>';
+const YELLOW_GLYPHICON = '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true" style="color:yellow"></span>';
 // need raw buffer for signature validation
 app.use(bodyParser.json({
   verify (req, res, buf) {
@@ -126,6 +127,9 @@ app.get('/summary/', async (req, res, next) => {
       else if (status == 'LEAVE'){
         glyphicon = BLUE_GLYPHICON;
       }
+      else if (status == 'WFH'){
+        glyphicon = YELLOW_GLYPHICON;
+      }
     
       tableContent_html += '<td>' + glyphicon + '</td>';
     }
@@ -133,6 +137,7 @@ app.get('/summary/', async (req, res, next) => {
   }
   let abbr_html = '<div class="col-sm-6">' + GREEN_GLYPHICON + ': OK or CONFIRM<br>'  + 
                   RED_GLYPHICON + ': Defective <br>'  + 
+      	          YELLOW_GLYPHICON + ': Wfh <br>' +
                   BLUE_GLYPHICON + ': Leave </div>';
   let abbr2_html = '<div class="col-sm-6"> Defect 1 : Turn off switch' + 
                   '<br>Defect 2 : Clear food and drink' + 
