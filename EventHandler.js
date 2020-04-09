@@ -198,7 +198,7 @@ module.exports ={
       }
       
       checkList[date]['time'] = d.getFullYear() + '-' +  (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes();
-      if ((element.data().status != LEAVE) && (element.data().status != MORNING_CHK) && userlist[element.data().userId]){
+      if ((element.data().status != WFH) && (element.data().status != LEAVE) && (element.data().status != MORNING_CHK) && userlist[element.data().userId]){
         checkList[date]['confirm'] = userlist[element.data().userId].name; 
       }
       if (element.data().status == MORNING_CHK && userlist[element.data().userId] && 
