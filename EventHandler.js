@@ -6,7 +6,7 @@ const SELF_CHK_CMD = 'Self-check';
 const ZONE_CONFIRM_CMD = 'Zone Confirm';
 const LEAVE_CMD = 'Leave';
 const NG_CMD = 'Incomplete';
-const ABOUT_CMD = 'About';
+const WFH_CMD = 'WFH';
 
 // Status
 const OK = 'OK';
@@ -46,8 +46,9 @@ module.exports ={
       case (NG_CMD):
         return_msg[0] = getCarousel(userId);
       break;
-      case (ABOUT_CMD):
-        return_msg[0].text = 'SDC-Safety developed by Narut T., and Surasak N.';
+      case (WFH_CMD):
+        await fbAPI.addCheckList(userId, WFH, timestamp)
+        return_msg[0].text = 'Stay safe during COVID-19!';
       break;
       default:
         let userData = await fbAPI.getUserById(userId);
